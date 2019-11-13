@@ -7,6 +7,11 @@ package dominio.archivos;
 
 import java.util.ArrayList;
 import java.io.*;
+import java.util.Calendar;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 /**
  *
@@ -14,6 +19,12 @@ import java.io.*;
  */
 public class archivos {
     private ArrayList<String> ListaComandos;
+    private String archivoLog;
+            
+    public void archivos()
+    {
+        archivoLog="";
+    }
     
     public int abrir(String direccion)
     {
@@ -33,8 +44,7 @@ public class archivos {
          String linea;
          while((linea=br.readLine())!=null)
          {
-             System.out.println(linea);
-             //Agregar la linea en el arraylist
+             ListaComandos.add(linea);
              resultado++;
          }
             
@@ -55,4 +65,41 @@ public class archivos {
       }
         return resultado;
     }    
+    
+    
+    public ArrayList<String> lista(String direccion)
+    {
+        return ListaComandos;
+    }
+    
+    public void CrearLog() throws IOException
+    {
+        String path = new File(".").getAbsolutePath();
+        path=path.substring(0,path.length()-1);
+        archivoLog=path + NombreArchivo();
+        System.out.println(archivoLog);
+        FileWriter fichero=null;
+        fichero=new FileWriter(archivoLog);        
+        
+    }
+    
+    public void Loguear(String linea)
+    {
+        
+    }
+    
+    private String NombreArchivo()
+    {
+        String respuesta="";
+        Calendar fecha = Calendar.getInstance();
+        int año = fecha.get(Calendar.YEAR);
+        int mes = fecha.get(Calendar.MONTH) + 1;
+        int dia = fecha.get(Calendar.DAY_OF_MONTH);
+        int hora = fecha.get(Calendar.HOUR_OF_DAY);
+        int minuto = fecha.get(Calendar.MINUTE);
+        int segundo = fecha.get(Calendar.SECOND);
+        respuesta="Log_" + Integer.toString(año) + Integer.toString(mes) + Integer.toString(dia) + Integer.toString(hora)+Integer.toString(minuto) + Integer.toString(segundo)+".log";
+        return respuesta;
+    }
+    
 }
