@@ -15,8 +15,15 @@ public class BLPObl {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        System.out.println("Hola Mundo");
+
+       if(args.length != 1){
+            System.out.println("Debe ingresar el nombre del archivo a evaluar (con dirección absoluta)");
+            System.exit(0);
+        }
+        
+        String Archivo=args[0];
+        
+        System.out.println(Archivo);
     }
     
 }
