@@ -9,6 +9,10 @@ package blpobl;
  *
  * @author Marcela Ferraz - Mauricio Zito
  */
+
+
+import dominio.archivos.archivos;
+
 public class BLPObl {
 
     /**
@@ -22,8 +26,15 @@ public class BLPObl {
         }
         
         String Archivo=args[0];
-        
+int lineas=0;
+        if(Archivo.length()>0)
+        {
+            archivos archivo =new archivos();
+            lineas=archivo.abrir(Archivo);
+            
+        }
         System.out.println(Archivo);
+        System.out.println(lineas);
     }
     
 }
