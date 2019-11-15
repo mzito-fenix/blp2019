@@ -9,12 +9,15 @@ package blpobl;
  *
  * @author Marcela Ferraz - Mauricio Zito
  */
+import dominio.archivos.archivos;
+import java.io.IOException;
+
 public class BLPObl {
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
        if(args.length != 1){
             System.out.println("Debe ingresar el nombre del archivo a evaluar (con dirección absoluta)");
@@ -22,8 +25,16 @@ public class BLPObl {
         }
         
         String Archivo=args[0];
-        
-        System.out.println(Archivo);
+        int lineas=0;
+        if(Archivo.length()>0)
+        {
+            archivos archivo =new archivos();
+            archivo.CrearLog();
+            archivo.Loguear("Abriendo archivo->" + Archivo);
+            lineas=archivo.abrir(Archivo);
+        }
+        //System.out.println(Archivo);
+        //System.out.println(lineas);
     }
     
 }
