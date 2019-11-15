@@ -25,14 +25,13 @@ public class BLPObl {
         }
         
         String Archivo=args[0];
-int lineas=0;
+        int lineas=0;
         if(Archivo.length()>0)
         {
             archivos archivo =new archivos();
             archivo.CrearLog();
-            //lineas=archivo.abrir(Archivo);
-            
-            
+            archivo.Loguear("Abriendo archivo->" + Archivo);
+            lineas=archivo.abrir(Archivo);
         }
         //System.out.println(Archivo);
         //System.out.println(lineas);

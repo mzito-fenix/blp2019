@@ -24,6 +24,8 @@ public class archivos {
     public void archivos()
     {
         archivoLog="";
+        
+        ListaComandos=new ArrayList<String>();
     }
     
     public int abrir(String direccion)
@@ -34,8 +36,6 @@ public class archivos {
          BufferedReader br = null;
 
       try {
-         // Apertura del fichero y creacion de BufferedReader para poder
-         // hacer una lectura comoda (disponer del metodo readLine()).
          archivo = new File (direccion);
          fr = new FileReader (archivo);
          br = new BufferedReader(fr);
@@ -44,7 +44,9 @@ public class archivos {
          String linea;
          while((linea=br.readLine())!=null)
          {
-             ListaComandos.add(linea);
+             //ListaComandos.add(linea);
+             this.Loguear(linea);
+             System.out.println(linea);
              resultado++;
          }
             
@@ -79,13 +81,17 @@ public class archivos {
         archivoLog=path + NombreArchivo();
         System.out.println(archivoLog);
         FileWriter fichero=null;
-        fichero=new FileWriter(archivoLog);        
-        
+        fichero=new FileWriter(archivoLog);   
     }
     
-    public void Loguear(String linea)
+    public void Loguear(String linea) throws IOException
     {
-        
+        System.out.println("Agregando->"+ linea);
+        FileWriter fichero=null;
+        fichero=new FileWriter(archivoLog,true);  
+        fichero.write(linea);
+        fichero.write("\r\n");
+        fichero.close();
     }
     
     private String NombreArchivo()
