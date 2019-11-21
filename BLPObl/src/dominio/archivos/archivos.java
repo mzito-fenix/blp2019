@@ -18,14 +18,16 @@ import java.io.FileOutputStream;
  * @author mzito
  */
 public class archivos {
-    private ArrayList<String> ListaComandos;
+    public ArrayList<String> ListaComandos;
     private String archivoLog;
-            
+
     public void archivos()
     {
         archivoLog="";
         
-        ListaComandos=new ArrayList<String>();
+        
+        
+        System.out.println("constructor");
     }
     
     public int abrir(String direccion)
@@ -42,11 +44,10 @@ public class archivos {
 
          // Lectura del fichero
          String linea;
+         ListaComandos=new ArrayList<String>();
          while((linea=br.readLine())!=null)
          {
-             //ListaComandos.add(linea);
-             this.Loguear(linea);
-             System.out.println(linea);
+             ListaComandos.add(linea);
              resultado++;
          }
             

@@ -10,7 +10,11 @@ package blpobl;
  * @author Marcela Ferraz - Mauricio Zito
  */
 import dominio.archivos.archivos;
+import dominio.archivos.comando;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BLPObl {
 
@@ -32,9 +36,42 @@ public class BLPObl {
             archivo.CrearLog();
             archivo.Loguear("Abriendo archivo->" + Archivo);
             lineas=archivo.abrir(Archivo);
+            if(lineas>0){
+                ArrayList<String> listaComandos;
+                listaComandos=archivo.ListaComandos;
+                int n=0;
+                String lineaActual;
+                String comandoActual;
+                comando Comando=new comando();
+                for(n=0;n<lineas;n++){
+                    lineaActual=listaComandos.get(n);                    
+                    
+                    if(Comando.Separar(lineaActual))
+                    {
+                        comandoActual=Comando.getComando();
+                        if(Comando.EsValido(comandoActual))
+                        {
+                            archivo.Loguear(comandoActual + " = OK");
+                        }
+                        else                        
+                        {
+                            archivo.Loguear(comandoActual + " = No es comando válido");
+                        }
+                        
+                    }
+                    else
+                    {
+                        archivo.Loguear("Error");
+                    }
+                }                
+            }
+            else
+            {
+                archivo.Loguear("El archivo estaba vacío");
+            }
         }
-        //System.out.println(Archivo);
-        //System.out.println(lineas);
+        System.out.println("Proceso finalizado");
+        
     }
     
 }
