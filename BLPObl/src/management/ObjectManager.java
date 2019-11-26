@@ -1,15 +1,17 @@
 package management;
 import java.util.ArrayList;
-import entities.Object;
+import entities.SecurityObject;
+import entities.SecuritySubject;
 
 public class ObjectManager {
-    private ArrayList<Object> Objects;
+    private ArrayList<SecurityObject> Objects;
+    private ArrayList<SecuritySubject> Subject;
     private static ObjectManager ObjectManager = null;
     
     //clase singleton
     private ObjectManager()
     {
-        this.Objects = new ArrayList<Object>();
+        this.Objects = new ArrayList<SecurityObject>();
     }
     
     public static ObjectManager getInstance()
@@ -20,17 +22,21 @@ public class ObjectManager {
         return ObjectManager;
     }
     
-    public ArrayList<Object> getObjects()
+    public ArrayList<SecurityObject> getObjects()
     {
         return this.Objects;
     }
     
+    
+    
     //lee y escribe objetos por su nombre
-    public void read(String objectName)
+    public int read(String subjectName, String objectName)
     {
+        return 0;
     }
     
-    public void write(String objectName)
+    public int write(String subjectName, String objectName, int val)
     {
+        return 0;
     }
 }
