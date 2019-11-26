@@ -11,6 +11,7 @@ package blpobl;
  */
 import dominio.archivos.archivos;
 import dominio.archivos.comando;
+import entities.InstructionObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -32,6 +33,7 @@ public class BLPObl {
         int lineas=0;
         if(Archivo.length()>0)
         {
+            InstructionObject IObj = new InstructionObject();
             archivos archivo =new archivos();
             archivo.CrearLog();
             archivo.Loguear("Abriendo archivo->" + Archivo);
@@ -51,6 +53,7 @@ public class BLPObl {
                         comandoActual=Comando.getComando();
                         if(Comando.EsValido(comandoActual))
                         {
+                            IObj.ejecutar(comandoActual,Comando.getParametro1(),Comando.getParametro2());
                             archivo.Loguear(comandoActual + " = OK");
                         }
                         else                        
