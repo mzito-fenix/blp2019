@@ -6,13 +6,11 @@ import dominio.archivos.comando;
 
 //se analiza cada una en un objeto de la clase InstructionObject" 
 public class InstructionObject {
-<<<<<<< HEAD
     public boolean ejecutar(String comando, String Parametro1, String Parametro2)
     {
-        
-        
         return true;
-=======
+    }
+    
     private OperationType type;
     private String subjectName;
     private String objectName;
@@ -82,6 +80,5 @@ public class InstructionObject {
     public static InstructionObject ValidateInstruction(String line) {
 //        comando.EsValido(line);
         return null;
->>>>>>> 78c387ddbc8bf81c5d4cc428997f377d9bc97a0a
     }
 }

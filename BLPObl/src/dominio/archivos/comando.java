@@ -81,12 +81,12 @@ public class comando {
             }
         }
         if (resultado) {
-            if (comando == "READ") {
+            if (comando.compareTo("READ") == 0) {
                 resultado = (param1 != "" && param2 != "");
             }
-            if (comando == "WRITE") {
+            if (comando.compareTo("READ") == 0) {
                 resultado = (param1 != "" && param2 != "" && param3 != "");
-            }
+            }            
         }
         return resultado;
     }

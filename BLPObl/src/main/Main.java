@@ -19,47 +19,79 @@ public class Main {
     public static archivos archivo = new archivos();
     public static ArrayList<SecuritySubject> sujetos = new ArrayList<SecuritySubject>();
     public static ArrayList<Object> objetos = new ArrayList<Object>();
+    ArrayList<String> lineas = null;
     
     public static void main(String[] args) {
         try {
-            ejecutarPrograma(args);
+            ejecutarPrograma(args);            
         } catch (Exception e) {
             System.out.println("Error");
         }
     }
 
     private static void ejecutarPrograma(String[] args) throws IOException {
-        ArrayList<String> lineas = null;
-        try{
-            ReferenceMonitor referenceMonitor = ReferenceMonitor.getInstance();
-            createSubject(new SecuritySubject("lyle", SecurityLevel.LOW));
-            createSubject(new SecurityObject("hal", SecurityLevel.HIGH));
-            referenceMonitor.createObject("lobj", SecurityLevel.LOW);
-            referenceMonitor.createObject("hobj", SecurityLevel.HIGH);
+        //Si no se reciben parametros, finaliza la ejecución
+        if (args.length <2) {
+            System.out.println("Debe ingresar el nombre del archivo a evaluar (con dirección absoluta)");
+            System.exit(0);
+        }
+        
+        //Parametro 1= P1 o P2 (si es Parte 1 o Parte 2)
+        //Si es P1
+        //Parametro 2= Archivo con la lista de instrucciones
+        
+        //Si es P2
+        //Parametro 2=
+        
+        
+        //ESTE CODIGO LO PIDE LA LETRA, ES PARA CARGAR 2 OBJETOS Y PROBAR
+        //        // LOW and HIGH are constants defined in the SecurityLevel
+        //// class, such that HIGH dominates LOW.
+        //SecurityLevel low = SecurityLevel.LOW;
+        //SecurityLevel high = SecurityLevel.HIGH;
+        //// We add two subjects, one high and one low.
+        //sys.createSubject("lyle", low);
+        //sys.createSubject("hal", high);
+        //// We add two objects, one high and one low.
+        //sys.getReferenceMonitor().createNewObject("Lobj", low);
+        //sys.getReferenceMonitor().createNewObject("Hobj", high);
 
-            lineas = readFile(args);
-            
-             int n=0;
+        
+        
+        String ParteObl = args[0]; //Que parte del obligatorio desea ejecutar
+        System.out.println(ParteObl);
+        if(ParteObl.compareTo("P1")==0)
+        {
+            String Archivo=args[1];
+            ejecutarParte1(Archivo);
+        }
+        
+        if(ParteObl.compareTo("P2")==0)
+        {
+            ejecutarParte2();
+        }
+    }
+
+    private static void ejecutarParte1(String Archivo) throws IOException{
+        ArrayList<String> listaComandos = new ArrayList<String>();
+        archivos archivo =new archivos();
+        archivo.CrearLog();
+        archivo.Loguear("Abriendo archivo->" + Archivo);
+        int lineas=archivo.abrir(Archivo);
+        if(lineas>0){
+                listaComandos=archivo.ListaComandos;
+                int n=0;
                 String lineaActual;
                 String comandoActual;
                 comando Comando=new comando();
-                for(n=0;n<lineas.size();n++){
-                    lineaActual=lineas.get(n);                    
-                    
-                    if(Comando.Separar(lineaActual))
-                    {
+                for(n=0;n<lineas;n++){
+                    lineaActual=listaComandos.get(n);
+                    if(Comando.Separar(lineaActual)){
                         comandoActual=Comando.getComando();
-                        if(Comando.EsValido(comandoActual, Comando.getParametro1(), Comando.getParametro2(), Comando.getParametro3()))
+                        if(Comando.EsValido(Comando.getComando(),Comando.getParametro1(),Comando.getParametro2(),Comando.getParametro3()))
                         {
-                            //hasta aca la sintaxis esta bien 
-                            if(ControlSemantica(Comando)){
-                                //si esta correcto hay que ejecutar
-                                
-                                Ejecutar(Comando);
-                            }
-                            else{
-                                archivo.Loguear(comandoActual + "BAD_INSTRUCTION");
-                            }
+                            //IObj.ejecutar(comandoActual,Comando.getParametro1(),Comando.getParametro2());
+                            archivo.Loguear(comandoActual + " = OK");
                         }
                         else                        
                         {
@@ -70,30 +102,23 @@ public class Main {
                     else
                     {
                         archivo.Loguear("Error");
-                    }
-                }              
-            
-            
-//            String line = br.readLine(br);
-//            while (line != null) {
-//                InstructionObject instruction = InstructionObject.ValidateInstruction(line);
-//                referenceMonitor.runInstruction(instruction);
-//                printState();
-//                line = br.readLine();
-//            }
-//            br.close();
-//            System.out.println("");
-//            System.out.println("Enter to exit...");
-//            System.in.read();
-//        } catch (Exception e) {
-//            System.out.println("An error has occured. Please re try.");
-//            if (br != null) {
-//                br.close();
-//            }
-//            resetProgramStatus();
-//            executeProgram();
-        }
+                    }                    
+                }
+            }
+            else
+            {
+                archivo.Loguear("El archivo estaba vacío");
+            }
     }
+    
+
+    private static void ejecutarParte2(){
+        
+    }
+
+    
+    
+    
     
     public static boolean ControlSemantica(comando Comando){
         //verificar si el objecto existe
@@ -114,27 +139,10 @@ public class Main {
         sujetos.add(sujeto);
     }
 
-    private static ArrayList<String> readFile(String[] args) throws IOException {
-        ArrayList<String> listaComandos = new ArrayList<String>();
-
-        if (args.length != 1) {
-            System.out.println("Debe ingresar el nombre del archivo a evaluar (con dirección absoluta)");
-            System.exit(0);
-        }
-
-        String Archivo = args[0];
-        int lineas = 0;
-        if (Archivo.length() > 0) {
-            
-            archivo.CrearLog();
-            archivo.Loguear("Abriendo archivo->" + Archivo);
-            lineas = archivo.abrir(Archivo);
-            if (lineas > 0) {
-
-                listaComandos = archivo.ListaComandos;
-            }
-        }
-        return listaComandos;
-    }
+//    private static ArrayList<String> readFile(String[] args) throws IOException {
+//
+//        
+//        
+//    }
 
 }

@@ -35,7 +35,7 @@ public class archivos {
         int resultado=0;
         File archivo = null;
         FileReader fr = null;
-         BufferedReader br = null;
+        BufferedReader br = null;
 
       try {
          archivo = new File (direccion);
@@ -79,7 +79,7 @@ public class archivos {
     {
         String path = new File(".").getAbsolutePath();
         path=path.substring(0,path.length()-1);
-        archivoLog=path + NombreArchivo();
+        archivoLog=path + "\\logs\\"+ NombreArchivo();
         System.out.println(archivoLog);
         FileWriter fichero=null;
         fichero=new FileWriter(archivoLog);   
