@@ -127,7 +127,7 @@ public class ObjectManager {
 
     }
 
-    private SecuritySubject findSubjectByName(String Nombre) {
+    public SecuritySubject findSubjectByName(String Nombre) {
         SecuritySubject resultado=new SecuritySubject();
         for(int x=0;x< Subjects.size();x++) {
             if(Nombre.compareTo(Subjects.get(x).getName())==0)            
@@ -136,7 +136,7 @@ public class ObjectManager {
         return resultado;
     }
     
-    private SecurityObject findObjectByName(String Nombre) {
+    public SecurityObject findObjectByName(String Nombre) {
         SecurityObject resultado=new SecurityObject();
         for(int x=0;x< Objects.size();x++) {
             if(Nombre.compareTo(Objects.get(x).getName())==0)          

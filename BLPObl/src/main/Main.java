@@ -151,10 +151,20 @@ public class Main {
         ReferenceMonitor RM=new ReferenceMonitor();
         String param1=Comando.getParametro1();
         String param2=Comando.getParametro2();       
-        String param3=Comando.getParametro3();        
+        String param3;
+        int valor=-1;
         
-        InstructionObject IObj=new InstructionObject(Comando.getComando(),param1,param2,Integer.parseInt(param3));
+        try{
+            param3=Comando.getParametro3();        
+            valor=Integer.parseInt(param3);
+        }
+        catch(Exception e){
+         param3="";
+      }
         
+        //System.out.println(param1 + param2 + param3);
+        
+        InstructionObject IObj=new InstructionObject(Comando.getComando(),param1,param2,valor);        
         RM.runInstruction(IObj);
         
     }
