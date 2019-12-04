@@ -47,45 +47,47 @@ public class comando {
     private String parametro2;
     private String parametro3;
 
-   
-    
-    public boolean Separar(String linea)
-    {
-        boolean devolucion=true;
-        
+    public boolean Separar(String linea) {
+        boolean devolucion = true;
+
         try {
-             String[] resultado= linea.split(" ");
-              this.comando= resultado[0];
-              this.parametro1= resultado[1];
-              this.parametro2= resultado[2];
-              
-              //no todos tienen que tener mas de dos parametros
-              try{
-                this.parametro3= resultado[3];
-              }
-              catch (Exception ex)
-              {
-                  
-              }
+            String[] resultado = linea.split(" ");
+            this.comando = resultado[0];
+            this.parametro1 = resultado[1];
+            this.parametro2 = resultado[2];
+
+            //no todos tienen que tener mas de dos parametros
+            try {
+                this.parametro3 = resultado[3];
+            } catch (Exception ex) {
+
             }
-        catch (Exception e) {
-            devolucion=false;
-        }  
+        } catch (Exception e) {
+            devolucion = false;
+        }
         return devolucion;
     }
-    
-    
-    public boolean EsValido(String comando) {
-        String [] comandosValidos = {"CREATE","WRITE","READ","DESTROY","RUN"};
-        boolean resultado=false;
+
+    public boolean EsValido(String comando, String param1, String param2, String param3) {
+        String[] comandosValidos = {"CREATE", "WRITE", "READ", "DESTROY", "RUN"};
+        boolean resultado = false;
         int n;
-        comando=comando.toUpperCase();
+        comando = comando.toUpperCase();
         String comandoActual;
-        for(n=0;n<comandosValidos.length;n++){
-            comandoActual=comandosValidos[n].toUpperCase();
-            if(comando.equals(comandoActual))
-               resultado=true;
+        for (n = 0; n < comandosValidos.length; n++) {
+            comandoActual = comandosValidos[n].toUpperCase();
+            if (comando.equals(comandoActual)) {
+                resultado = true;
+            }
+        }
+        if (resultado) {
+            if (comando == "READ") {
+                resultado = (param1 != "" && param2 != "");
+            }
+            if (comando == "WRITE") {
+                resultado = (param1 != "" && param2 != "" && param3 != "");
+            }
         }
         return resultado;
-      }
+    }
 }
