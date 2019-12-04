@@ -1,8 +1,10 @@
 package management;
+import dominio.archivos.archivos;
 import entities.SecurityLevel;
 import java.util.ArrayList;
 import entities.SecurityObject;
 import entities.SecuritySubject;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -84,12 +86,7 @@ public class ObjectManager {
     
     //lee y escribe objetos por su nombre
     public boolean read(String subjectName, String objectName)
-    {
-        System.out.println("VOY A EJECUTAR EL READ CON ESTOS PARAMETROS");
-        System.out.println(subjectName);
-        System.out.println(objectName);
-        System.out.println("----------------------------------------------");
-        
+    {       
         boolean resultado=false;
         if(ExistObject(objectName)){
             //Busco el objeto y de encontrarlo, me quedo con el valor
@@ -107,28 +104,25 @@ public class ObjectManager {
         return resultado;
     }
     
-    public boolean write(String subjectName, String objectName, int value)
+    public boolean write(String subjectName, String objectName, int value) throws IOException
     {
-        System.out.println("VOY A EJECUTAR EL WRITE CON ESTOS PARAMETROS");
-        System.out.println(subjectName);
-        System.out.println(objectName);
-        System.out.println(value);
-        System.out.println("----------------------------------------------");
-        
+        archivos archivoLog =archivos.getInstance();    
+
         boolean resultado=false;
         if(ExistObject(objectName)){
             if(ExistSubject(subjectName)){
                 for(int x=0;x< Objects.size();x++) {
                     if(objectName.compareTo(Objects.get(x).getName())==0){            
-                        System.out.println("********* Encontre el objeto");
                        Objects.get(x).setValue(value);
                        resultado=true;
                     }
                   }   
             }      
-            else {System.out.println("No Encontre el sujeto");}
+            else {
+                       archivoLog.Loguear("ERROR: No Encontre el sujeto");
+            }
         }        
-        else {System.out.println("No Encontre el objeto");}
+        else {archivoLog.Loguear("ERROR: No Encontre el objeto");}
         return resultado;
 
     }
@@ -173,23 +167,25 @@ public class ObjectManager {
       return resultado;  
     }
     
-    public void listSubjects(){
-        System.out.println("LISTA DE SUJETOS");
+    public void listSubjects() throws IOException{
+        archivos archivoLog =archivos.getInstance();    
+        archivoLog.Loguear("LISTA DE SUJETOS");
         for(int x=0;x< Subjects.size();x++) {
-            System.out.println("Name :" + Subjects.get(x).getName());
-            System.out.println("Nivel:" + Subjects.get(x).getSecurityLevel().toString());
-            System.out.println("Temp:" + Subjects.get(x).getTEMP());
-            System.out.println("******************************");
+            archivoLog.Loguear("Name :" + Subjects.get(x).getName());
+            archivoLog.Loguear("Nivel:" + Subjects.get(x).getSecurityLevel().toString());
+            archivoLog.Loguear("Temp:" + Subjects.get(x).getTEMP());
+            archivoLog.Loguear("******************************");
           }                
     }
     
-    public void listObjects(){
-        System.out.println("LISTA DE OBJETOS");
+    public void listObjects() throws IOException{
+        archivos archivoLog =archivos.getInstance();    
+        archivoLog.Loguear("LISTA DE OBJETOS");
         for(int x=0;x< Objects.size();x++) {
-            System.out.println("Name :" + Objects.get(x).getName());
-            System.out.println("Nivel:" + Objects.get(x).getSecurityLevel().toString());
-            System.out.println("Valor:" + Objects.get(x).getValue());
-            System.out.println("******************************");
+            archivoLog.Loguear("Name :" + Objects.get(x).getName());
+            archivoLog.Loguear("Nivel:" + Objects.get(x).getSecurityLevel().toString());
+            archivoLog.Loguear("Valor:" + Objects.get(x).getValue());
+            archivoLog.Loguear("******************************");
           }        
     }
     

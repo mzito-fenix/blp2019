@@ -31,6 +31,10 @@ public class Main {
     }
 
     private static void ejecutarPrograma(String[] args) throws IOException {
+        archivos archivoLog =archivos.getInstance();
+        archivoLog.CrearLog();
+
+        
         ObjectManager sys=ObjectManager.getInstance();
         
         //Si no se reciben parametros, finaliza la ejecución
@@ -57,13 +61,11 @@ public class Main {
        boolean res3=sys.CreateObject("Lobj", low);
        boolean res4=sys.CreateObject("Hobj", high);
        
-       System.out.println("Estado Inicial");
+       archivoLog.Loguear("#### Estado Inicial");
        sys.listSubjects();
        sys.listObjects();
 
-       
         String ParteObl = args[0]; //Que parte del obligatorio desea ejecutar
-        System.out.println(ParteObl);
         if(ParteObl.compareTo("P1")==0)
         {
             String Archivo=args[1];
@@ -75,21 +77,24 @@ public class Main {
             ejecutarParte2();
         }
         
-        System.out.println("Estado Final");
+       archivoLog.Loguear("#### Estado Final");
         sys.listSubjects();
         sys.listObjects();
         
     }
 
     private static void ejecutarParte1(String Archivo) throws IOException{
+        
         ObjectManager OM=ObjectManager.getInstance();
         ArrayList<String> listaComandos = new ArrayList<String>();
-        archivos archivo =new archivos();
-        archivo.CrearLog();
-        archivo.Loguear("Abriendo archivo->" + Archivo);
-        int lineas=archivo.abrir(Archivo);
+
+        archivos archivoLog =archivos.getInstance();
+
+        archivoLog.Loguear("Abriendo archivo->" + Archivo);
+        int lineas=archivoLog.abrir(Archivo);
+        
         if(lineas>0){
-                listaComandos=archivo.ListaComandos;
+                listaComandos=archivoLog.ListaComandos;
                 int n=0;
                 String lineaActual;
                 String comandoActual;
@@ -100,30 +105,35 @@ public class Main {
                         comandoActual=Comando.getComando().toString();
                         if(Comando.EsValido(Comando.getComando().toString(),Comando.getParametro1(),Comando.getParametro2(),Comando.getParametro3()))
                         {
-                            
                             Ejecutar(Comando);
-                            archivo.Loguear(comandoActual + " = OK");
+                            archivoLog.Loguear(comandoActual );
                         }
                         else                        
                         {
-                            archivo.Loguear(comandoActual + " = No es comando válido");
-                        }
-                        
+                            archivoLog.Loguear("BAD_INSTRUCTION");
+                        }                        
                     }
                     else
                     {
-                        archivo.Loguear("Error");
+                        archivoLog.Loguear("BAD_INSTRUCTION");
                     }                    
                 }
             }
             else
             {
-                archivo.Loguear("El archivo estaba vacío");
+                archivoLog.Loguear("El archivo estaba vacío");
             }
     }
     
 
     private static void ejecutarParte2(){
+        //1-Implementar las funciones que faltan (Run, Create y destroy)
+        //https://www.lawebdelprogramador.com/foros/Java/1491808-Borrar-elemento-del-array.html
+        //2-Abrir el archivo de secuencia de lectura (H, L, etc...) quien lee y a quien le toca
+        //3-Abrir el archivo que hay que transmitir (al final de cada linea hay que ver como resolver el salto de linea)
+        //4-Tomar cada caracter, pasarlo a bits y transferirlo
+        //5-Se debe usar un flag (Proximo turno de: y esa variable puede tener H o L para que solo haga algo a quien le toque y no antes
+        //6-El mensaje va de Hall a Lyle
         
     }
 
@@ -135,7 +145,7 @@ public class Main {
         return true;
     }
     
-    public static void Ejecutar(comando Comando){
+    public static void Ejecutar(comando Comando) throws IOException{
         //aca se ejecuta las acciones 
                 
         ReferenceMonitor RM=new ReferenceMonitor();
@@ -146,8 +156,6 @@ public class Main {
         InstructionObject IObj=new InstructionObject(Comando.getComando(),param1,param2,Integer.parseInt(param3));
         
         RM.runInstruction(IObj);
-        
-        
         
     }
 }

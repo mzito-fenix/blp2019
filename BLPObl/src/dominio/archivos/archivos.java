@@ -5,6 +5,7 @@
  */
 package dominio.archivos;
 
+import entities.ReferenceMonitor;
 import java.util.ArrayList;
 import java.io.*;
 import java.util.Calendar;
@@ -12,23 +13,29 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import management.ObjectManager;
 
-/**
- *
- * @author mzito
- */
+
 public class archivos {
+    private static archivos Archivo = null;
+    
     public ArrayList<String> ListaComandos;
     private String archivoLog;
 
-    public void archivos()
+    private void archivos()
     {
         archivoLog="";
-        
-        
-        
-        System.out.println("constructor");
+
     }
+
+    public static archivos getInstance()
+    {
+        if (Archivo == null) {
+            Archivo = new archivos();
+        }
+        return Archivo;
+    }
+    
     
     public int abrir(String direccion)
     {
@@ -87,12 +94,12 @@ public class archivos {
     
     public void Loguear(String linea) throws IOException
     {
-        System.out.println("Agregando->"+ linea);
         FileWriter fichero=null;
         fichero=new FileWriter(archivoLog,true);  
         fichero.write(linea);
         fichero.write("\r\n");
         fichero.close();
+        System.out.println(linea);
     }
     
     private String NombreArchivo()

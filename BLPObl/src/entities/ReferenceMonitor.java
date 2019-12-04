@@ -1,20 +1,11 @@
 package entities;
 
+import java.io.IOException;
+import static main.Main.archivo;
 import management.ObjectManager;
 
 public class ReferenceMonitor {
-    private static ReferenceMonitor referenceMonitor = null;
-    private final ObjectManager objectManager;
-//    private final LevelHandler levelHandler;
-
-    public static String Read = "read";
-    public static String Write = "write";
-    public static String WhiteSpace = " ";
-    
-    public ReferenceMonitor() {
-        objectManager = ObjectManager.getInstance();
-//        levelHandler = LevelHandler.getInstance();
-    }
+    public static ReferenceMonitor referenceMonitor = null;
     
      public static ReferenceMonitor getInstance() {
         if (referenceMonitor == null) {
@@ -22,8 +13,12 @@ public class ReferenceMonitor {
         }
         return referenceMonitor;
     }
+
+    public ReferenceMonitor() {
+
+    }
      
-     public void runInstruction(InstructionObject instruction) {
+     public void runInstruction(InstructionObject instruction) throws IOException {
         switch (instruction.getType()) {
             case READ:
                 executeRead(instruction.getSubjectName(), instruction.getObjectName());
@@ -32,7 +27,7 @@ public class ReferenceMonitor {
                 executeWrite(instruction.getSubjectName(), instruction.getObjectName(), instruction.getValue());
                 break;
             case BAD_INSTRUCTION:
-                System.out.println("Bad Instruction");
+                archivo.Loguear("BAD_INSTRUCTION");
                 break;
             default:
                 break;
@@ -44,13 +39,8 @@ public class ReferenceMonitor {
       return OM.read(subjectName, objectName);      
   }
 
-public boolean executeWrite(String subjectName, String objectName, int value) {
-      ObjectManager OM =ObjectManager.getInstance();
-      
-      System.out.println("Vamos a escribir");
-      
-      
-      
+public boolean executeWrite(String subjectName, String objectName, int value) throws IOException {
+      ObjectManager OM =ObjectManager.getInstance();      
       return OM.write(subjectName, objectName,value);      
   }
   

@@ -1,4 +1,5 @@
 write lyle lobj 10
 write hal hobj 90
+todo mal
 read lyle lobj
 read hal lobj
