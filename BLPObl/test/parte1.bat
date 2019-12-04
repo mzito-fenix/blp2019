@@ -1,2 +1,2 @@
-java -jar "BLPObl.jar" "P1" ".\listaparte1.txt"
+java -jar "BLPObl.jar" "P1" ".\instructionList.txt"
 Pause

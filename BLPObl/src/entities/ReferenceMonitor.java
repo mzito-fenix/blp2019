@@ -11,7 +11,7 @@ public class ReferenceMonitor {
     public static String Write = "write";
     public static String WhiteSpace = " ";
     
-    private ReferenceMonitor() {
+    public ReferenceMonitor() {
         objectManager = ObjectManager.getInstance();
 //        levelHandler = LevelHandler.getInstance();
     }
@@ -26,10 +26,10 @@ public class ReferenceMonitor {
      public void runInstruction(InstructionObject instruction) {
         switch (instruction.getType()) {
             case READ:
-//                executeRead(instruction.getSubjectName(), instruction.getObjectName());
+                executeRead(instruction.getSubjectName(), instruction.getObjectName());
                 break;
             case WRITE:
-//                executeWrite(instruction.getSubjectName(), instruction.getObjectName(), instruction.getValue());
+                executeWrite(instruction.getSubjectName(), instruction.getObjectName(), instruction.getValue());
                 break;
             case BAD_INSTRUCTION:
                 System.out.println("Bad Instruction");
@@ -39,31 +39,19 @@ public class ReferenceMonitor {
         }
     }
     
-//  public int executeRead(String subjectName, String objectName) {
-//        Subject sujeto = Main.systemSubjects.get(SecureSystem.systemSubjects.
-//                indexOf(new Subject(subjectName)));
-//        Object object = objectManager.getObjects().get(objectManager.
-//                getObjects().indexOf(new Object(objectName)));
-//        System.out.println(subjectName + " reads " + objectName);
-//        if (levelHandler.dominates(subject.getLevel(), object.getLevel())) {
-//            subject.setReadValue(objectManager.read(objectName));
-//            return subject.getTemp();
-//        } else {
-//            subject.setReadValue(0);
-//            return subject.getTemp();
-//        }
-//    }
-//  
-//   public void executeWrite(String subjectName, String objectName, int value) {
-//        Subject subject = SecureSystem.systemSubjects.get(SecureSystem.systemSubjects.
-//                indexOf(new Subject(subjectName)));
-//        Object object = objectManager.getObjects().get(objectManager.
-//                getObjects().indexOf(new Object(objectName)));
-//        System.out.println(subject.getName() + " writes value " + value + " to " + object.getName());
-//        if (levelHandler.dominates(object.getLevel(), subject.getLevel())) {
-//            objectManager.write(object.getName(), value);
-//        }
-//    }
-    
-    
+  public boolean executeRead(String subjectName, String objectName) {
+      ObjectManager OM =ObjectManager.getInstance();
+      return OM.read(subjectName, objectName);      
+  }
+
+public boolean executeWrite(String subjectName, String objectName, int value) {
+      ObjectManager OM =ObjectManager.getInstance();
+      
+      System.out.println("Vamos a escribir");
+      
+      
+      
+      return OM.write(subjectName, objectName,value);      
+  }
+  
 }

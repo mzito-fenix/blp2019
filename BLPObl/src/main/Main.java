@@ -1,18 +1,19 @@
 package main;
 
 import dominio.archivos.archivos;
-import dominio.archivos.comando;
+import entities.comando;
 import entities.InstructionObject;
 import entities.ReferenceMonitor;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import dominio.archivos.archivos;
-import dominio.archivos.comando;
+import entities.comando;
 import entities.SecurityLevel;
 import entities.SecurityObject;
 import entities.SecuritySubject;
 import java.io.IOException;
+import management.ObjectManager;
 
 public class Main {
 
@@ -30,6 +31,8 @@ public class Main {
     }
 
     private static void ejecutarPrograma(String[] args) throws IOException {
+        ObjectManager sys=ObjectManager.getInstance();
+        
         //Si no se reciben parametros, finaliza la ejecución
         if (args.length <2) {
             System.out.println("Debe ingresar el nombre del archivo a evaluar (con dirección absoluta)");
@@ -44,20 +47,21 @@ public class Main {
         //Parametro 2=
         
         
-        //ESTE CODIGO LO PIDE LA LETRA, ES PARA CARGAR 2 OBJETOS Y PROBAR
-        //        // LOW and HIGH are constants defined in the SecurityLevel
-        //// class, such that HIGH dominates LOW.
-        //SecurityLevel low = SecurityLevel.LOW;
-        //SecurityLevel high = SecurityLevel.HIGH;
-        //// We add two subjects, one high and one low.
-        //sys.createSubject("lyle", low);
-        //sys.createSubject("hal", high);
-        //// We add two objects, one high and one low.
-        //sys.getReferenceMonitor().createNewObject("Lobj", low);
-        //sys.getReferenceMonitor().createNewObject("Hobj", high);
+        SecurityLevel low = SecurityLevel.LOW;
+        SecurityLevel high = SecurityLevel.HIGH;
+        
+        
+       boolean res1=sys.createSubject("lyle", low);
+       boolean res2=sys.createSubject("hal", high);
 
-        
-        
+       boolean res3=sys.CreateObject("Lobj", low);
+       boolean res4=sys.CreateObject("Hobj", high);
+       
+       System.out.println("Estado Inicial");
+       sys.listSubjects();
+       sys.listObjects();
+
+       
         String ParteObl = args[0]; //Que parte del obligatorio desea ejecutar
         System.out.println(ParteObl);
         if(ParteObl.compareTo("P1")==0)
@@ -70,9 +74,15 @@ public class Main {
         {
             ejecutarParte2();
         }
+        
+        System.out.println("Estado Final");
+        sys.listSubjects();
+        sys.listObjects();
+        
     }
 
     private static void ejecutarParte1(String Archivo) throws IOException{
+        ObjectManager OM=ObjectManager.getInstance();
         ArrayList<String> listaComandos = new ArrayList<String>();
         archivos archivo =new archivos();
         archivo.CrearLog();
@@ -87,10 +97,11 @@ public class Main {
                 for(n=0;n<lineas;n++){
                     lineaActual=listaComandos.get(n);
                     if(Comando.Separar(lineaActual)){
-                        comandoActual=Comando.getComando();
-                        if(Comando.EsValido(Comando.getComando(),Comando.getParametro1(),Comando.getParametro2(),Comando.getParametro3()))
+                        comandoActual=Comando.getComando().toString();
+                        if(Comando.EsValido(Comando.getComando().toString(),Comando.getParametro1(),Comando.getParametro2(),Comando.getParametro3()))
                         {
-                            //IObj.ejecutar(comandoActual,Comando.getParametro1(),Comando.getParametro2());
+                            
+                            Ejecutar(Comando);
                             archivo.Loguear(comandoActual + " = OK");
                         }
                         else                        
@@ -117,9 +128,6 @@ public class Main {
     }
 
     
-    
-    
-    
     public static boolean ControlSemantica(comando Comando){
         //verificar si el objecto existe
         //verificar si el sujecto existe
@@ -129,20 +137,17 @@ public class Main {
     
     public static void Ejecutar(comando Comando){
         //aca se ejecuta las acciones 
+                
+        ReferenceMonitor RM=new ReferenceMonitor();
+        String param1=Comando.getParametro1();
+        String param2=Comando.getParametro2();       
+        String param3=Comando.getParametro3();        
+        
+        InstructionObject IObj=new InstructionObject(Comando.getComando(),param1,param2,Integer.parseInt(param3));
+        
+        RM.runInstruction(IObj);
+        
+        
+        
     }
-    
-    private static void createSubject(Object objeto){
-       objetos.add(objeto);
-    }
-    
-    private static void createObject(SecuritySubject sujeto){
-        sujetos.add(sujeto);
-    }
-
-//    private static ArrayList<String> readFile(String[] args) throws IOException {
-//
-//        
-//        
-//    }
-
 }

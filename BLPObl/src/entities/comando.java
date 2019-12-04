@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dominio.archivos;
+package entities;
 
 /**
  *
@@ -11,13 +11,6 @@ package dominio.archivos;
  */
 public class comando {
 
-    public String getComando() {
-        return comando;
-    }
-
-    public void setComando(String comando) {
-        this.comando = comando;
-    }
 
     public String getParametro1() {
         return parametro1;
@@ -42,7 +35,15 @@ public class comando {
     public void setParametro3(String parametro3) {
         this.parametro3 = parametro3;
     }
-    private String comando;
+    private OperationType comando;
+
+    public OperationType getComando() {
+        return comando;
+    }
+
+    public void setComando(OperationType comando) {
+        this.comando = comando;
+    }
     private String parametro1;
     private String parametro2;
     private String parametro3;
@@ -52,10 +53,13 @@ public class comando {
 
         try {
             String[] resultado = linea.split(" ");
-            this.comando = resultado[0];
+            this.comando = this.resolverOperacion(resultado[0]);
             this.parametro1 = resultado[1];
             this.parametro2 = resultado[2];
 
+            this.parametro1= parametro1.toUpperCase();
+            this.parametro2= parametro2.toUpperCase();
+            
             //no todos tienen que tener mas de dos parametros
             try {
                 this.parametro3 = resultado[3];
@@ -84,10 +88,26 @@ public class comando {
             if (comando.compareTo("READ") == 0) {
                 resultado = (param1 != "" && param2 != "");
             }
-            if (comando.compareTo("READ") == 0) {
+            if (comando.compareTo("WRITE") == 0) {
                 resultado = (param1 != "" && param2 != "" && param3 != "");
             }            
         }
+        
         return resultado;
     }
+    
+    private OperationType resolverOperacion(String Nombre)
+    {
+        Nombre = Nombre.toUpperCase();
+        System.out.println(Nombre);
+        if (Nombre.compareTo("READ") == 0){
+                return OperationType.READ;
+        }
+        else if (Nombre.compareTo("WRITE") == 0) {
+                return OperationType.WRITE;
+        }
+        else
+            return OperationType.BAD_INSTRUCTION;
+    }
+    
 }
