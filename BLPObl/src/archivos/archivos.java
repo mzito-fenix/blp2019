@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dominio.archivos;
+package archivos;
 
 import entities.ReferenceMonitor;
 import java.util.ArrayList;

@@ -1,5 +1,5 @@
 package management;
-import dominio.archivos.archivos;
+import archivos.archivos;
 import entities.SecurityLevel;
 import java.util.ArrayList;
 import entities.SecurityObject;
@@ -62,7 +62,7 @@ public class ObjectManager {
 
     
     
-    private boolean ExistSubject(String Nombre)
+    public boolean ExistSubject(String Nombre)
     {
         boolean resultado=false;
         SecuritySubject resultadoBusqueda=new SecuritySubject();
@@ -73,7 +73,7 @@ public class ObjectManager {
         return resultado;
     }
     
-    private boolean ExistObject(String Nombre)
+    public boolean ExistObject(String Nombre)
     {
         boolean resultado=false;
         SecurityObject resultadoBusqueda=new SecurityObject();

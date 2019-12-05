@@ -1,6 +1,6 @@
 package entities;
 
-import dominio.archivos.archivos;
+import archivos.archivos;
 import java.io.IOException;
 import static main.Main.archivo;
 import management.ObjectManager;
@@ -21,26 +21,38 @@ public class ReferenceMonitor {
      
      public void runInstruction(InstructionObject instruction) throws IOException {
         archivos ArchivoLog = archivos.getInstance();
+
+        //Verifico la existencia de sujeto y objeto
+        ObjectManager OM =ObjectManager.getInstance();      
+        boolean existeObjeto=OM.ExistObject(instruction.getObjectName());
+        boolean existeSujeto=OM.ExistSubject(instruction.getSubjectName());
         
-        switch (instruction.getType()) {
-            case READ:
-                //ArchivoLog.Loguear(instruction.getSubjectName()+ instruction.getObjectName()+
-                //        instruction.getValue());
-                //ArchivoLog.Loguear("Antes de leer");                
-                if(!executeRead(instruction.getSubjectName(), instruction.getObjectName()))
-                    ArchivoLog.Loguear("ERROR PERMISOS");
-                break;
-            case WRITE:
-                ArchivoLog.Loguear(instruction.getSubjectName()+ instruction.getObjectName()+
-                        instruction.getValue());
-                if(!executeWrite(instruction.getSubjectName(), instruction.getObjectName(), instruction.getValue()))
-                    ArchivoLog.Loguear("ERROR PERMISOS");
-                break;
-            case BAD_INSTRUCTION:
-                ArchivoLog.Loguear("BAD_INSTRUCTION");
-                break;
-            default:
-                break;
+        if(existeObjeto&&existeSujeto){
+            switch (instruction.getType()) {
+                case READ:
+                    if(!executeRead(instruction.getSubjectName(), instruction.getObjectName()))
+                        ArchivoLog.Loguear("ERROR PERMISOS");
+                    break;
+                case WRITE:
+                    ArchivoLog.Loguear(instruction.getSubjectName()+ instruction.getObjectName()+
+                            instruction.getValue());
+                    if(!executeWrite(instruction.getSubjectName(), instruction.getObjectName(), instruction.getValue()))
+                        ArchivoLog.Loguear("ERROR PERMISOS");
+                    break;
+                case BAD_INSTRUCTION:
+                    ArchivoLog.Loguear("BAD_INSTRUCTION");
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            if(!existeObjeto)
+                ArchivoLog.Loguear("ERROR: No existe objeto");
+            if(!existeSujeto)
+                ArchivoLog.Loguear("ERROR: No existe sujeto");
+            
         }
     }
     
@@ -48,8 +60,8 @@ public class ReferenceMonitor {
       ObjectManager OM =ObjectManager.getInstance();      
       boolean resultado=true;
       //Propiedad simple : el sujeto solo puede leer de su nivel hacia abajo
-      
-      if(this.RelacionDeNivel(subjectName, objectName)==3||this.RelacionDeNivel(subjectName, objectName)==1)
+      int relNivel=this.RelacionDeNivel(subjectName, objectName);
+      if(relNivel==3||relNivel==1)
       {
           resultado=OM.read(subjectName, objectName);
       }
@@ -61,7 +73,8 @@ public boolean executeWrite(String subjectName, String objectName, int value) th
         ObjectManager OM =ObjectManager.getInstance();      
         //Propiedad *: El sujeto solo puede escribir de su nivel hacia arriba
 
-      if(this.RelacionDeNivel(subjectName, objectName)==3||this.RelacionDeNivel(subjectName, objectName)==1)
+        int relNivel=this.RelacionDeNivel(subjectName, objectName);
+      if(relNivel==3||relNivel==2)
       {
           resultado=OM.write(subjectName, objectName,value);
       }
@@ -70,9 +83,9 @@ public boolean executeWrite(String subjectName, String objectName, int value) th
   
 private int RelacionDeNivel(String subjectName, String objectName){
     int resultado=-1;
-    //1=sujeto es mayor que objeto
-    //2=objeto es mayor que sujeto
-    //3=son del mismo nivel
+    //1=sujeto es mayor que objeto -> leer
+    //2=objeto es mayor que sujeto -> write
+    //3=son del mismo nivel -> leer o escrbir
     //-1 = no se pudo comparar
       ObjectManager OM =ObjectManager.getInstance();
       
@@ -81,16 +94,15 @@ private int RelacionDeNivel(String subjectName, String objectName){
       
       SecurityObject objeto=new SecurityObject();
       objeto=OM.findObjectByName(objectName);
-    
+
+      if(sujeto.getSecurityLevel()==SecurityLevel.HIGH&&objeto.getSecurityLevel()==SecurityLevel.LOW)
+          resultado=1;
+
+      if(objeto.getSecurityLevel()==SecurityLevel.HIGH&&sujeto.getSecurityLevel()==SecurityLevel.LOW)
+          resultado=2;
+
       if(sujeto.getSecurityLevel()==objeto.getSecurityLevel())
           resultado=3;
-      
-      if(sujeto.getSecurityLevel()==SecurityLevel.HIGH&&objeto.getSecurityLevel()==SecurityLevel.LOW)
-          resultado=3;
-            
-      if(sujeto.getSecurityLevel()==SecurityLevel.LOW&&objeto.getSecurityLevel()==SecurityLevel.HIGH)
-          resultado=2;
-      
       return resultado;
 }
        

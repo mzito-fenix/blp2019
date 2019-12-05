@@ -1,13 +1,13 @@
 package main;
 
-import dominio.archivos.archivos;
+import archivos.archivos;
 import entities.comando;
 import entities.InstructionObject;
 import entities.ReferenceMonitor;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import dominio.archivos.archivos;
+import archivos.archivos;
 import entities.comando;
 import entities.SecurityLevel;
 import entities.SecurityObject;
@@ -33,7 +33,6 @@ public class Main {
     private static void ejecutarPrograma(String[] args) throws IOException {
         archivos archivoLog =archivos.getInstance();
         archivoLog.CrearLog();
-
         
         ObjectManager sys=ObjectManager.getInstance();
         
@@ -84,15 +83,11 @@ public class Main {
     }
 
     private static void ejecutarParte1(String Archivo) throws IOException{
-        
         ObjectManager OM=ObjectManager.getInstance();
         ArrayList<String> listaComandos = new ArrayList<String>();
-
         archivos archivoLog =archivos.getInstance();
-
         archivoLog.Loguear("Abriendo archivo->" + Archivo);
-        int lineas=archivoLog.abrir(Archivo);
-        
+        int lineas=archivoLog.abrir(Archivo);        
         if(lineas>0){
                 listaComandos=archivoLog.ListaComandos;
                 int n=0;
