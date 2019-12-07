@@ -3,10 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/USER/Documents/NetBeansProjects/CanalEncubiertoObl/src/entities/NivelSeguridad.java</file>
-            <file>file:/C:/Users/USER/Documents/NetBeansProjects/CanalEncubiertoObl/src/entities/Sujeto.java</file>
-            <file>file:/C:/Users/USER/Documents/NetBeansProjects/CanalEncubiertoObl/src/entities/InstruccionObjeto.java</file>
+            <file>file:/C:/Users/USER/Documents/NetBeansProjects/CanalEncubiertoObl/src/manager/ObjectManager.java</file>
             <file>file:/C:/Users/USER/Documents/NetBeansProjects/CanalEncubiertoObl/src/canalencubiertoobl/CanalEncubiertoOblMain.java</file>
+            <file>file:/C:/Users/USER/Documents/NetBeansProjects/CanalEncubiertoObl/src/entities/ReferenceMonitor.java</file>
         </group>
     </open-files>
 </project-private>

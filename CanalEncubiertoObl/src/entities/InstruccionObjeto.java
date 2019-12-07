@@ -67,6 +67,7 @@ public class InstruccionObjeto {
         this.valor = valor;
     }
     
-    
-    
+    public static InstruccionObjeto validarInstruccions(String linea){
+        return null;
+    }
 }
