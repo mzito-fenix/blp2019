@@ -1,3 +1,7 @@
+//Clase: Encargado del control de niveles de seguridad, aplicación de reglas y ejecución de las operaciones
+//Motivo: Obligatorio de Aspectos de Seguridad 2019 - segundo semestre
+//Autores: Ferraz (200112) - Zito (111725)
+
 package entities;
 
 import archivos.archivos;
@@ -34,8 +38,6 @@ public class ReferenceMonitor {
                         ArchivoLog.Loguear("ERROR PERMISOS");
                     break;
                 case WRITE:
-                    ArchivoLog.Loguear(instruction.getSubjectName()+ instruction.getObjectName()+
-                            instruction.getValue());
                     if(!executeWrite(instruction.getSubjectName(), instruction.getObjectName(), instruction.getValue()))
                         ArchivoLog.Loguear("ERROR PERMISOS");
                     break;

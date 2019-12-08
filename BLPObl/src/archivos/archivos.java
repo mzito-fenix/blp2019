@@ -1,8 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+//Clase: Clase que controla la lectura y escritura de archivos (lectura de instrucciones y escritura de log), interacción con el sistema operativo.
+//Motivo: Obligatorio de Aspectos de Seguridad 2019 - segundo semestre
+//Autores: Ferraz (200112) - Zito (111725)
+
+
 package archivos;
 
 import entities.ReferenceMonitor;
@@ -87,7 +87,6 @@ public class archivos {
         String path = new File(".").getAbsolutePath();
         path=path.substring(0,path.length()-1);
         archivoLog=path + "\\logs\\"+ NombreArchivo();
-        System.out.println(archivoLog);
         FileWriter fichero=null;
         fichero=new FileWriter(archivoLog);   
     }

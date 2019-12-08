@@ -37,18 +37,11 @@ public class Main {
         ObjectManager sys=ObjectManager.getInstance();
         
         //Si no se reciben parametros, finaliza la ejecución
-        if (args.length <2) {
-            System.out.println("Debe ingresar el nombre del archivo a evaluar (con dirección absoluta)");
+        if (args.length <1) {
+            archivoLog.Loguear("Debe ingresar el nombre del archivo a evaluar (con dirección absoluta)");
             System.exit(0);
         }
-        
-        //Parametro 1= P1 o P2 (si es Parte 1 o Parte 2)
-        //Si es P1
-        //Parametro 2= Archivo con la lista de instrucciones
-        
-        //Si es P2
-        //Parametro 2=
-        
+                
         
         SecurityLevel low = SecurityLevel.LOW;
         SecurityLevel high = SecurityLevel.HIGH;
@@ -63,18 +56,8 @@ public class Main {
        archivoLog.Loguear("#### Estado Inicial");
        sys.listSubjects();
        sys.listObjects();
-
-        String ParteObl = args[0]; //Que parte del obligatorio desea ejecutar
-        if(ParteObl.compareTo("P1")==0)
-        {
-            String Archivo=args[1];
-            ejecutarParte1(Archivo);
-        }
-        
-        if(ParteObl.compareTo("P2")==0)
-        {
-            ejecutarParte2();
-        }
+       String Archivo=args[0];
+       ejecutarParte1(Archivo);
         
        archivoLog.Loguear("#### Estado Final");
         sys.listSubjects();
@@ -121,28 +104,8 @@ public class Main {
     }
     
 
-    private static void ejecutarParte2(){
-        //1-Implementar las funciones que faltan (Run, Create y destroy)
-        //https://www.lawebdelprogramador.com/foros/Java/1491808-Borrar-elemento-del-array.html
-        //2-Abrir el archivo de secuencia de lectura (H, L, etc...) quien lee y a quien le toca
-        //3-Abrir el archivo que hay que transmitir (al final de cada linea hay que ver como resolver el salto de linea)
-        //4-Tomar cada caracter, pasarlo a bits y transferirlo
-        //5-Se debe usar un flag (Proximo turno de: y esa variable puede tener H o L para que solo haga algo a quien le toque y no antes
-        //6-El mensaje va de Hall a Lyle
         
-    }
-
-    
-    public static boolean ControlSemantica(comando Comando){
-        //verificar si el objecto existe
-        //verificar si el sujecto existe
-        //verificar si el sujecto puede hacer la accion sobre el objeto
-        return true;
-    }
-    
-    public static void Ejecutar(comando Comando) throws IOException{
-        //aca se ejecuta las acciones 
-                
+    public static void Ejecutar(comando Comando) throws IOException{            
         ReferenceMonitor RM=new ReferenceMonitor();
         String param1=Comando.getParametro1();
         String param2=Comando.getParametro2();       
@@ -156,8 +119,6 @@ public class Main {
         catch(Exception e){
          param3="";
       }
-        
-        //System.out.println(param1 + param2 + param3);
         
         InstructionObject IObj=new InstructionObject(Comando.getComando(),param1,param2,valor);        
         RM.runInstruction(IObj);

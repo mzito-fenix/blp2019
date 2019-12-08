@@ -4,6 +4,3 @@ El archivo preparar.bat lo que hace es traer la última versión del archivo .jar 
 
 parte1.bat
 Ejecuta la parte 1 del obligatorio con los parametros correctos
-
-Parte2.bat 
-Ejecuta la parte 2 del obligatorio con los parametros correctos

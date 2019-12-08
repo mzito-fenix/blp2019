@@ -1,6 +1,9 @@
+//Clase: Clase que resume información para la ejecución del comando
+//Motivo: Obligatorio de Aspectos de Seguridad 2019 - segundo semestre
+//Autores: Ferraz (200112) - Zito (111725)
+
 package entities;
 
-//"se leeran las lineas sucesivas del archivo y 
 public class InstructionObject {
     public boolean ejecutar(String comando, String Parametro1, String Parametro2)
     {
