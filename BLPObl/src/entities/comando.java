@@ -1,14 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package entities;
+//Clase: Encargado de la verificación de correctitud y separación de las operaciones y parámetros para su posterior ejecución
+//Motivo: Obligatorio de Aspectos de Seguridad 2019 - segundo semestre
+//Autores: Ferraz (200112) - Zito (111725)
 
-/**
- *
- * @author mzito
- */
+
+package entities;
 public class comando {
 
 
@@ -99,7 +94,6 @@ public class comando {
     private OperationType resolverOperacion(String Nombre)
     {
         Nombre = Nombre.toUpperCase();
-        System.out.println(Nombre);
         if (Nombre.compareTo("READ") == 0){
                 return OperationType.READ;
         }

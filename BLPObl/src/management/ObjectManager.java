@@ -1,3 +1,7 @@
+//Clase: Controlador que contiene el comportamiento de una base de datos para registrar el listado de sujetos, objetos y sus estados
+//Motivo: Obligatorio de Aspectos de Seguridad 2019 - segundo semestre
+//Autores: Ferraz (200112) - Zito (111725)
+
 package management;
 import archivos.archivos;
 import entities.SecurityLevel;
