@@ -1,5 +1,8 @@
-package entities;
+package manager;
 
+import entities.SecurityLevel;
+import entities.SecurityObject;
+import entities.SecuritySubject;
 import manager.ObjectManager;
 
 public class ReferenceMonitor {
@@ -14,7 +17,7 @@ public class ReferenceMonitor {
         return referenceMonitor;
     }
     
-    public ReferenceMonitor() {
+    private ReferenceMonitor() {
         objectManager = ObjectManager.getInstance();
         sendedBits = "";
     }
@@ -74,5 +77,8 @@ public class ReferenceMonitor {
         catch(Exception e){
             System.out.println(e.getMessage().toString());
         }
+    }
+    
+    public void run(){
     }
 }
