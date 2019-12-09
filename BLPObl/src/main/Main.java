@@ -83,7 +83,7 @@ public class Main {
                         comandoActual=Comando.getComando().toString();
                         if(Comando.EsValido(Comando.getComando().toString(),Comando.getParametro1(),Comando.getParametro2(),Comando.getParametro3()))
                         {
-                            Ejecutar(Comando);
+                            EjecutarLinea(Comando);
                             archivoLog.Loguear(comandoActual );
                         }
                         else                        
@@ -105,7 +105,7 @@ public class Main {
     
 
         
-    public static void Ejecutar(comando Comando) throws IOException{            
+    public static void EjecutarLinea(comando Comando) throws IOException{            
         ReferenceMonitor RM=new ReferenceMonitor();
         String param1=Comando.getParametro1();
         String param2=Comando.getParametro2();       
