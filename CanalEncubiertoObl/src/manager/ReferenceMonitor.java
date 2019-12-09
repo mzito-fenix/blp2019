@@ -1,12 +1,17 @@
 package manager;
 
+import entities.InstruccionObjeto;
 import entities.SecurityLevel;
 import entities.SecurityObject;
 import entities.SecuritySubject;
+import entities.TipoInstruccion;
+import files.LogFile;
+import java.io.IOException;
 import manager.ObjectManager;
 
 public class ReferenceMonitor {
     public static ReferenceMonitor referenceMonitor = null;
+    public static LogFile logFile = null;
     public static ObjectManager objectManager;
     public String sendedBits;
     
@@ -19,6 +24,7 @@ public class ReferenceMonitor {
     
     private ReferenceMonitor() {
         objectManager = ObjectManager.getInstance();
+        logFile = LogFile.getInstance();
         sendedBits = "";
     }
     
@@ -79,6 +85,59 @@ public class ReferenceMonitor {
         }
     }
     
-    public void run(){
+    public void RunInstuction(InstruccionObjeto instruccion) throws IOException{
+        String actionLog = "";
+        
+        TipoInstruccion instructionCase = instruccion.getTipo();
+        switch(instructionCase)
+        {
+            case RUN:
+                this.ExecuteRUNAction(instruccion.getNombreSujeto());
+                break;
+            case READ:
+                this.ExecuteREADAction(instruccion.getNombreObjeto(), instruccion.getNombreSujeto());
+                break;
+            case WRITE:
+                this.ExecuteWRITEAction(instruccion.getNombreObjeto(), instruccion.getNombreSujeto(), instruccion.getValor());
+                break;
+            case CREATE:
+                this.ExecuteCREATEAction(instruccion.getNombreObjeto(), instruccion.getNombreSujeto());
+                break;
+            case DESTROY:
+                this.ExecuteDESTROYAction(instruccion.getNombreObjeto(), instruccion.getNombreSujeto());
+                break;
+            case BAD:
+                this.ExecuteBADAction();
+                break;
+            default:
+                break;
+        }
     }
+    
+    public void ExecuteRUNAction(String subjectName)throws IOException
+    {
+        String actionLog = "";
+        //la instruccion RUN de lyle le permite hacer lo que tenga que hacer
+        //para registrar en su estado interno, agregar al byte que se acaba de crear, 
+        //y sacar el byte si se ha recibido los 8 bits para ese byte.
+        if(subjectName == "lyle" && sendedBits.length() == 8)
+        {
+            sendedBits = "";
+            //seguir aca
+        }
+        
+        actionLog = "RUN " + subjectName;
+        logFile.InsertLogLine(actionLog);
+        
+    }
+    
+    public void ExecuteREADAction(String objectName, String subjectName){}
+    
+    public void ExecuteWRITEAction(String objectName, String subjectName, int value){}
+    
+    public void ExecuteCREATEAction(String objectName, String subjectName){}
+    
+    public void ExecuteDESTROYAction(String objectName, String subjectName){}
+    
+    public void ExecuteBADAction(){}
 }

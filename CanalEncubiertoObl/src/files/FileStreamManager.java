@@ -1,5 +1,7 @@
 package files;
 
+import entities.InstruccionObjeto;
+import entities.TipoInstruccion;
 import fileAction.FileAction;
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
+import manager.ReferenceMonitor;
 import org.javatuples.Triplet;
 
 public class FileStreamManager {
@@ -19,6 +22,10 @@ public class FileStreamManager {
     private char[] readDataOnBits = new char[0];
     private String HLSequenceLine = "";
     private FileAction FileActions = null;
+    private char HLSequence;
+    private int HLCharPosition = 0;
+    private String Turn = "hal";
+    private ReferenceMonitor ReferenceMonitor;
 
     public static FileStreamManager getInstance() {
         if (fileStream == null) {
@@ -60,6 +67,7 @@ public class FileStreamManager {
     }
 
     public void transferData() throws IOException {
+        ReferenceMonitor = ReferenceMonitor.getInstance();
         long fileLength = fileToTransfer.length();
 
         if (actuallyBytesRecieved < fileLength) {
@@ -83,10 +91,63 @@ public class FileStreamManager {
             FileActions = FileAction.getInstance();
             BufferedReader bufferedReaderFile = FileActions.readHLSequenceFile();
             PrepareHLLine(bufferedReaderFile);
-            
-            
+            ExecuteDataReader(bufferedReaderFile);
+            //aca
+        }
+    }
+
+    public void ExecuteDataReader(BufferedReader b) throws IOException {
+        while (!EmptyData(readDataOnBits)) {
+            for (int i = 0; i < readDataOnBits.length; i++) {
+                while ((Turn == "hal" && HLSequence != 'h') || (Turn == "lyle" && HLSequence != 'l')) {
+                    if (HLSequenceLine == null || HLCharPosition == HLSequenceLine.length()) {
+                        HLSequenceLine = b.readLine();
+                        HLSequenceLine = HLSequenceLine.toLowerCase();
+//                        HLSequenceLine = HLSequenceLine.replaceAll("\t", " ");
+//                        HLSequenceLine = HLSequenceLine.replaceAll(" +", " ").trim();
+                        HLCharPosition = 0;
+                    }
+                    HLSequence = HLSequenceLine.charAt(HLCharPosition);
+                    HLCharPosition++;
+                }
+
+                if (Turn == "hal" && HLSequence == 'h') {
+                    HalExecution(readDataOnBits[i],b);
+                }
+                if (Turn == "lyle" && HLSequence == 'l') {
+                    LyleExecution();
+                }
+
+            }
 
         }
+    }
+
+    public void HalExecution(char tranferBit, BufferedReader b) throws IOException {
+        ReferenceMonitor.RunInstuction(new InstruccionObjeto(TipoInstruccion.RUN, "hal"));
+        if (tranferBit == '0') {
+            ReferenceMonitor.RunInstuction(new InstruccionObjeto(TipoInstruccion.CREATE, "hal", "obj"));
+        }
+        Turn = "lyle";
+
+        while ((Turn == "hal" && HLSequence != 'h') || (Turn == "lyle" && HLSequence != 'l')) {
+            if (HLSequenceLine == null || HLCharPosition == HLSequenceLine.length()) {
+                HLSequenceLine = b.readLine();
+                HLSequenceLine = HLSequenceLine.toLowerCase();
+//                        HLSequenceLine = HLSequenceLine.replaceAll("\t", " ");
+//                        HLSequenceLine = HLSequenceLine.replaceAll(" +", " ").trim();
+                HLCharPosition = 0;
+            }
+            HLSequence = HLSequenceLine.charAt(HLCharPosition);
+            HLCharPosition++;
+        }
+    }
+
+    public void LyleExecution() {
+    }
+
+    public boolean EmptyData(char[] data) {
+        return data.length == 0;
     }
 
     public void PrepareHLLine(BufferedReader bufferedReaderFile) throws IOException {
@@ -97,8 +158,7 @@ public class FileStreamManager {
 //            HLSequenceLine = HLSequenceLine.replaceAll("\t", " ");
 //            HLSequenceLine = HLSequenceLine.replaceAll(" +", " ").trim();
             HLSequenceLine = HLSequenceLine.replaceAll(" ", "");
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             System.out.print("Error de lectura de archivo");
         }
 
