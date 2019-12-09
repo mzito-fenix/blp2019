@@ -133,11 +133,11 @@ public class ReferenceMonitor {
         byteToStore[0] = Byte.parseByte(sendedBits, 2);
 
         try {
-            RecordFile.getInstance("Prueba//" + fileRecordName).record(byteToStore);
+            RecordFile.getInstance("test//" + fileRecordName).record(byteToStore);
         } catch (Exception e) {
-            File file = new File("Prueba//" + fileRecordName);
+            File file = new File("test//" + fileRecordName);
             file.createNewFile();
-            RecordFile.getInstance("Prueba//" + fileRecordName).record(byteToStore);
+            RecordFile.getInstance("test//" + fileRecordName).record(byteToStore);
         }
     }
 

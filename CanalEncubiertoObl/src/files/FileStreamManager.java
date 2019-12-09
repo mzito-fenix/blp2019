@@ -37,13 +37,13 @@ public class FileStreamManager {
     private FileStreamManager() {
     }
 
-    public Triplet<String, File, InputStream> createFileStreamFileToTransfer() throws IOException {
+    public Triplet<String, File, InputStream> createFileStreamFileToTransfer() {
         try {
             String message = "Ingrese nombre de archivo al cual se desea enviar el mensaje encubierto: ";
             System.out.println(message);
-
-            String inputPath = new Scanner(System.in).nextLine();
-            fileToTransfer = new File("Pruebas/" + inputPath);
+            Scanner scanner = new Scanner(System.in);
+            String inputPath = scanner.nextLine();
+            fileToTransfer = new File("test/" + inputPath);
             fileToTransferInputStream = new FileInputStream(fileToTransfer);
         } catch (Exception e) {
             return new Triplet<String, File, InputStream>("error", fileToTransfer, fileToTransferInputStream);
