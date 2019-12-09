@@ -49,6 +49,7 @@ public class CanalEncubiertoOblMain {
             
             if(fileCorrectData()){
                 outputFileName = fileStreamManager.getOutputFileName();
+                referenceMonitor.setFileRecordName(outputFileName);
                 System.out.println("Trabajando. Puede demorar unos segundos...");
                 //llamada a las cosas que estoy haciendo de los archivos
                 

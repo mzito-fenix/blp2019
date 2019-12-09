@@ -98,9 +98,9 @@ public class ObjectManager {
     }
     
     //lee y escribe objetos por su nombre
-    public boolean read(String subjectName, String objectName)
+    public int read(String subjectName, String objectName)
     {       
-        boolean resultado=false;
+        int resultado = 0;
         if(ExistObject(objectName)){
             //Busco el objeto y de encontrarlo, me quedo con el valor
             SecurityObject objetoBuscado=new SecurityObject();
@@ -109,7 +109,7 @@ public class ObjectManager {
                 for(int x=0;x< Subjects.size();x++) {
                     if(subjectName.compareTo(Subjects.get(x).getName())==0){            
                        Subjects.get(x).setTEMP(objetoBuscado.getValue());
-                       resultado=true;
+                       resultado=objetoBuscado.getValue();
                     }
                   }        
             }          
