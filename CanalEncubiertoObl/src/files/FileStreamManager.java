@@ -42,6 +42,7 @@ public class FileStreamManager {
     }
 
     public static Triplet<String, File, InputStream> createFileStreamFileToTransfer() {
+        String messageError = "";
         try {
             String message = "Ingrese nombre de archivo que contiene el mensaje junto con su extension (mensaje.txt) : ";
             System.out.println(message);
@@ -50,7 +51,8 @@ public class FileStreamManager {
             fileToTransfer = new File("test/" + inputPath);
             fileToTransferInputStream = new FileInputStream(fileToTransfer);
         } catch (Exception e) {
-            return new Triplet<String, File, InputStream>("error", fileToTransfer, fileToTransferInputStream);
+            messageError = "Error en nombre de archivo";
+            return new Triplet<String, File, InputStream>(messageError, fileToTransfer, fileToTransferInputStream);
 
         }
         return new Triplet<String, File, InputStream>("", fileToTransfer, fileToTransferInputStream);

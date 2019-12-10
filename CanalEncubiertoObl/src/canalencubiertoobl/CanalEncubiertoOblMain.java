@@ -54,8 +54,10 @@ public class CanalEncubiertoOblMain {
             error = data.getValue0();
             while (error != "") {
                 System.out.println(error);
-                fileToTransfer = fileStreamManager.createFileStreamFileToTransfer().getValue1();
-                fileToTransferInputStream = fileStreamManager.createFileStreamFileToTransfer().getValue2();
+                data = FileStreamManager.createFileStreamFileToTransfer();
+                error = data.getValue0();
+                fileToTransfer = data.getValue1();
+                fileToTransferInputStream = data.getValue2();
             }
 
             if (fileCorrectData()) {
