@@ -32,8 +32,7 @@ public class CanalEncubiertoOblMain {
         }
     }
 
-    public CanalEncubiertoOblMain() {
-    }
+    public CanalEncubiertoOblMain() {}
 
     public static void ejecutarPrograma() throws IOException {
         try {
@@ -64,8 +63,10 @@ public class CanalEncubiertoOblMain {
                 outputFileName = fileStreamManager.getOutputFileName();
                 fileStreamManager.clearFile();
                 referenceMonitor.setFileRecordName(outputFileName);
-                System.out.println("Trabajando. Puede demorar unos segundos...");
-                //llamada a las cosas que estoy haciendo de los archivos
+                
+                System.out.println("\n");
+                System.out.println("ESPERE...");
+                System.out.println("\n");
 
                 fileStreamManager = FileStreamManager.getInstance();
                 fileStreamManager.transferData(); 
@@ -80,36 +81,14 @@ public class CanalEncubiertoOblMain {
 
         } catch (Exception e) {
             System.out.println(e.getMessage().toString());
-
         }
-
     }
 
     public static boolean fileCorrectData() {
         return (fileToTransfer != null && fileToTransferInputStream != null);
     }
 
-    public static void obtenerSecuenciaChar(BufferedReader sec) {
-
-    }
-
-    public static char[] leerBytes(File archivo, InputStream inputStreamArchivo) throws IOException {
-        return null;
-    }
-
-    public static BufferedReader leerNombreArchivo() {
-        return null;
-    }
-
     public static void crearSujeto(String nombre, SecurityLevel securityLevel) {
         objectManager.createSubject(nombre, securityLevel);
-    }
-
-    public static boolean existeSujeto(String nombre) {
-        return false;
-    }
-
-    public void obtenerNombreArchivo() {
-
     }
 }

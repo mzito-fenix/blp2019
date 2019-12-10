@@ -8,7 +8,7 @@ import entities.TipoInstruccion;
 import fileAction.FileAction;
 import files.FileStreamManager;
 import files.LogFile;
-import files.TextFileRecorder;
+import files.WriteFile;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -22,7 +22,7 @@ public class ReferenceMonitor {
     public String sendedBits;
     private String fileRecordName = "";
     private static RecordFile recordFile = null;
-    private String textFileRecordingName = "test//log.txt";
+    private String logFilePath = "test//log.txt";
     private FileStreamManager fileStreamManager = null;
 
     public static ReferenceMonitor getInstance() throws IOException {
@@ -206,8 +206,7 @@ public class ReferenceMonitor {
         this.destroyObject(objectName, subjectName);
     }
 
-    public void ExecuteBADAction() {
-    }
+    public void ExecuteBADAction() {}
 
     public void recordLastBits() throws IOException {
         if (sendedBits.length() > 0) {
@@ -220,7 +219,7 @@ public class ReferenceMonitor {
     }
 
     public void closeFiles() throws IOException {
-        TextFileRecorder.getInstance(textFileRecordingName).close();
+        WriteFile.getInstance(logFilePath).close();
         recordFile.getInstance(fileRecordName).close();
     }
 }

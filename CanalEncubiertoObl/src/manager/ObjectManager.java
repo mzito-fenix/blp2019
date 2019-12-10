@@ -160,27 +160,4 @@ public class ObjectManager {
 
         return resultado;
     }
-
-    public void listSubjects() throws IOException {
-//        archivos archivoLog = archivos.getInstance();    
-//        archivoLog.Loguear("LISTA DE SUJETOS");
-//        for(int x=0;x< Subjects.size();x++) {
-//            archivoLog.Loguear("Name :" + Subjects.get(x).getName());
-//            archivoLog.Loguear("Nivel:" + Subjects.get(x).getSecurityLevel().toString());
-//            archivoLog.Loguear("Temp:" + Subjects.get(x).getTEMP());
-//            archivoLog.Loguear("******************************");
-//          }                
-    }
-
-    public void listObjects() throws IOException {
-//        archivos archivoLog =archivos.getInstance();    
-//        archivoLog.Loguear("LISTA DE OBJETOS");
-//        for(int x=0;x< Objects.size();x++) {
-//            archivoLog.Loguear("Name :" + Objects.get(x).getName());
-//            archivoLog.Loguear("Nivel:" + Objects.get(x).getSecurityLevel().toString());
-//            archivoLog.Loguear("Valor:" + Objects.get(x).getValue());
-//            archivoLog.Loguear("******************************");
-//          }        
-    }
-
 }

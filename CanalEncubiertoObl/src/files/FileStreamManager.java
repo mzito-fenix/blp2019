@@ -130,7 +130,6 @@ public class FileStreamManager {
     }
 
     private void getSequenceChar(BufferedReader b) throws IOException {
-        int lineLength = HLSequenceLine.length();
         while ((Turn == "hal" && HLSequence != 'h') || (Turn == "lyle" && HLSequence != 'l')) {
             if (HLSequenceLine == null || HLCharPosition == HLSequenceLine.length()) {
                 HLSequenceLine = b.readLine();
