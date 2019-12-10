@@ -67,6 +67,11 @@ public class ReferenceMonitor {
       {
           resultado=OM.read(subjectName, objectName);
       }
+      else
+      {
+          //Si no puede leer, lo deja en cero
+          OM.findSubjectByName(subjectName).setTEMP(0);
+      }
       return resultado;      
   }
 

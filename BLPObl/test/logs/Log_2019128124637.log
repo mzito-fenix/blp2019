@@ -1,0 +1,67 @@
+#### Estado Inicial
+LISTA DE SUJETOS
+Name :LYLE
+Nivel:LOW
+Temp:0
+******************************
+Name :HAL
+Nivel:HIGH
+Temp:0
+******************************
+LISTA DE OBJETOS
+Name :LOBJ
+Nivel:LOW
+Valor:0
+******************************
+Name :HOBJ
+Nivel:HIGH
+Valor:0
+******************************
+Abriendo archivo->.\instructionList.txt
+LYLELOBJ10
+WRITE
+HALHOBJ90
+WRITE
+BAD_INSTRUCTION
+READ
+READ
+LYLELOBJ20
+WRITE
+HALLOBJ200
+WRITE
+READ
+LYLEHOBJ150
+WRITE
+READ
+READ
+READ
+LYLEHOBJ50
+WRITE
+BAD_INSTRUCTION
+ERROR: No existe objeto
+WRITE
+READ
+HALLOBJ70
+WRITE
+HALHOBJ200
+WRITE
+BAD_INSTRUCTION
+#### Estado Final
+LISTA DE SUJETOS
+Name :LYLE
+Nivel:LOW
+Temp:20
+******************************
+Name :HAL
+Nivel:HIGH
+Temp:50
+******************************
+LISTA DE OBJETOS
+Name :LOBJ
+Nivel:LOW
+Valor:20
+******************************
+Name :HOBJ
+Nivel:HIGH
+Valor:200
+******************************
