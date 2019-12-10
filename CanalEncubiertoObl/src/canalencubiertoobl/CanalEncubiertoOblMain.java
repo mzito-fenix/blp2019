@@ -61,6 +61,7 @@ public class CanalEncubiertoOblMain {
 
             if (fileCorrectData()) {
                 outputFileName = fileStreamManager.getOutputFileName();
+                fileStreamManager.clearFile();
                 referenceMonitor.setFileRecordName(outputFileName);
                 
                 System.out.println("\n");
@@ -68,7 +69,6 @@ public class CanalEncubiertoOblMain {
                 System.out.println("\n");
 
                 fileStreamManager = FileStreamManager.getInstance();
-                
                 fileStreamManager.transferData(); 
                 FileActions = FileAction.getInstance();
                 BufferedReader bufferedReaderFile = FileActions.readHLSequenceFile();

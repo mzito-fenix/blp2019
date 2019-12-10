@@ -58,12 +58,11 @@ public class FileStreamManager {
         return new Triplet<String, File, InputStream>("", fileToTransfer, fileToTransferInputStream);
     }
 
-    
-    public String getFileRecord(){
+    public String getFileRecord() {
         return outputFileName;
     }
-    
-    public String getOutputFileName() throws IOException{
+
+    public String getOutputFileName() throws IOException {
         String fileName = fileToTransfer.getName();
         String[] aux = fileName.split("\\.");
         outputFileName = "";
@@ -74,8 +73,8 @@ public class FileStreamManager {
                 outputFileName += aux[i] + ".";
             }
         }
-        
-        return  outputFileName;
+
+        return outputFileName;
     }
 
     public void transferData() throws IOException {
@@ -143,7 +142,7 @@ public class FileStreamManager {
         }
     }
 
-public void LyleExecution() throws IOException {
+    public void LyleExecution() throws IOException {
         ReferenceMonitor.RunInstuction(new InstruccionObjeto(TipoInstruccion.CREATE, "lyle", "obj"));
         ReferenceMonitor.RunInstuction(new InstruccionObjeto(TipoInstruccion.WRITE, "lyle", "obj", 1));
         ReferenceMonitor.RunInstuction(new InstruccionObjeto(TipoInstruccion.READ, "lyle", "obj"));
@@ -190,28 +189,32 @@ public void LyleExecution() throws IOException {
         }
         return bits;
     }
-    
-     public void clearFile() throws IOException {
+
+    public void clearFile() throws IOException {
         File inputFile = new File("myFile.txt");
         File tempFile = new File("myTempFile.txt");
 
-        BufferedReader reader = new BufferedReader(new FileReader("test/" + outputFileName));
-        BufferedWriter writer = new BufferedWriter(new FileWriter("test/" + outputFileName));
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("test/" + outputFileName));
+            BufferedWriter writer = new BufferedWriter(new FileWriter("test/" + outputFileName));
 
-        String lineToRemove = "bbb";
-        String currentLine;
+            String lineToRemove = "bbb";
+            String currentLine;
 
-        while ((currentLine = reader.readLine()) != null) {
-            // trim newline when comparing with lineToRemove
-            String trimmedLine = currentLine.trim();
-            if (trimmedLine.equals(lineToRemove)) {
-                continue;
+            while ((currentLine = reader.readLine()) != null) {
+                // trim newline when comparing with lineToRemove
+                String trimmedLine = currentLine.trim();
+                if (trimmedLine.equals(lineToRemove)) {
+                    continue;
+                }
+                writer.write(currentLine + System.getProperty("line.separator"));
             }
-            writer.write(currentLine + System.getProperty("line.separator"));
+            writer.close();
+            reader.close();
+            boolean successful = tempFile.renameTo(inputFile);
+        } catch (Exception e) {
+            System.out.println("Archivo de salida ya esta limpio");
         }
-        writer.close();
-        reader.close();
-        boolean successful = tempFile.renameTo(inputFile);
     }
 
 }
