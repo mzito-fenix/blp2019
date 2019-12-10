@@ -1,0 +1,19 @@
+write lyle lobj 10
+write hal hobj 90
+como venimos por ahora?
+read lyle lobj
+read hal lobj
+write lyle lobj 20
+write hal lobj 200
+read hal hobj
+write lyle hobj 150
+read hal hobj
+read lyle lobj
+read lyle hobj
+write lyle hobj 50
+leer lyle lobj
+write lyle lucas 70
+read hal hobj
+write hal lobj
+write hal hobj 200
+Final de las instrucciones
