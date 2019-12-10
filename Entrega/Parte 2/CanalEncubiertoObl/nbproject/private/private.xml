@@ -3,11 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/USER/Desktop/Obligatorio-aspectos-de-seguridad/CanalEncubiertoObl/src/manager/ReferenceMonitor.java</file>
-            <file>file:/C:/Users/USER/Desktop/Obligatorio-aspectos-de-seguridad/CanalEncubiertoObl/src/fileAction/FileAction.java</file>
-            <file>file:/C:/Users/USER/Desktop/Obligatorio-aspectos-de-seguridad/CanalEncubiertoObl/src/manager/RecordFile.java</file>
-            <file>file:/C:/Users/USER/Desktop/Obligatorio-aspectos-de-seguridad/CanalEncubiertoObl/src/files/FileStreamManager.java</file>
-            <file>file:/C:/Users/USER/Desktop/Obligatorio-aspectos-de-seguridad/CanalEncubiertoObl/src/canalencubiertoobl/CanalEncubiertoOblMain.java</file>
+            <file>file:/C:/Mauricio/ORT/Seguridad/CanalEncubiertoObl/src/files/FileStreamManager.java</file>
+            <file>file:/C:/Mauricio/ORT/Seguridad/CanalEncubiertoObl/src/manager/ReferenceMonitor.java</file>
+            <file>file:/C:/Mauricio/ORT/Seguridad/CanalEncubiertoObl/src/canalencubiertoobl/CanalEncubiertoOblMain.java</file>
+            <file>file:/C:/Mauricio/ORT/Seguridad/CanalEncubiertoObl/src/manager/RecordFile.java</file>
+            <file>file:/C:/Mauricio/ORT/Seguridad/CanalEncubiertoObl/src/manager/ObjectManager.java</file>
         </group>
     </open-files>
 </project-private>
