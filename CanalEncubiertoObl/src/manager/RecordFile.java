@@ -20,11 +20,11 @@ public class RecordFile {
         return fileRecorder;
     }
      
-     public boolean record(byte[] byteToRecord)
+     public boolean record(byte[] byteToRecord,String path)
      {
          boolean result = true;
         try {
-            fileOutputStream = new FileOutputStream(filePath, true);
+            fileOutputStream = new FileOutputStream("test//" + path, true);
             fileOutputStream.write(byteToRecord);
             close();
         } catch (IOException ex) {

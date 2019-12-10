@@ -37,9 +37,9 @@ public class FileStreamManager {
     private FileStreamManager() {
     }
 
-    public Triplet<String, File, InputStream> createFileStreamFileToTransfer() {
+    public static Triplet<String, File, InputStream> createFileStreamFileToTransfer() {
         try {
-            String message = "Ingrese nombre de archivo al cual se desea enviar el mensaje encubierto: ";
+            String message = "Ingrese nombre de archivo que contiene el mensaje junto con su extension (mensaje.txt) : ";
             System.out.println(message);
             Scanner scanner = new Scanner(System.in);
             String inputPath = scanner.nextLine();
@@ -52,6 +52,11 @@ public class FileStreamManager {
         return new Triplet<String, File, InputStream>("", fileToTransfer, fileToTransferInputStream);
     }
 
+    
+    public String getFileRecord(){
+        return outputFileName;
+    }
+    
     public String getOutputFileName() {
         String fileName = fileToTransfer.getName();
         String[] aux = fileName.split("\\.");
@@ -87,40 +92,25 @@ public class FileStreamManager {
             //codigo para pasar de ARRAY DE BYTES -> ARRAY DE BITS
             readDataOnBits = LoadByteArrayToBitsArray(arrayOfBytes);
 
-            //leer lineas de archivo
-            FileActions = FileAction.getInstance();
-            BufferedReader bufferedReaderFile = FileActions.readHLSequenceFile();
-            PrepareHLLine(bufferedReaderFile);
-            ExecuteDataReader(bufferedReaderFile);
-            //aca
         }
     }
 
     public void ExecuteDataReader(BufferedReader b) throws IOException {
         while (!EmptyData(readDataOnBits)) {
             for (int i = 0; i < readDataOnBits.length; i++) {
-                while ((Turn == "hal" && HLSequence != 'h') || (Turn == "lyle" && HLSequence != 'l')) {
-                    if (HLSequenceLine == null || HLCharPosition == HLSequenceLine.length()) {
-                        HLSequenceLine = b.readLine();
-                        HLSequenceLine = HLSequenceLine.toLowerCase();
-//                        HLSequenceLine = HLSequenceLine.replaceAll("\t", " ");
-//                        HLSequenceLine = HLSequenceLine.replaceAll(" +", " ").trim();
-                        HLCharPosition = 0;
-                    }
-                    HLSequence = HLSequenceLine.charAt(HLCharPosition);
-                    HLCharPosition++;
-                }
+                getSequenceChar(b);
 
                 if (Turn == "hal" && HLSequence == 'h') {
-                    HalExecution(readDataOnBits[i],b);
+                    HalExecution(readDataOnBits[i], b);
+                    getSequenceChar(b);
                 }
                 if (Turn == "lyle" && HLSequence == 'l') {
                     LyleExecution();
                 }
-
             }
-
+            transferData();
         }
+        ReferenceMonitor.recordLastBits();
     }
 
     public void HalExecution(char tranferBit, BufferedReader b) throws IOException {
@@ -130,12 +120,16 @@ public class FileStreamManager {
         }
         Turn = "lyle";
 
+    }
+
+    private void getSequenceChar(BufferedReader b) throws IOException {
+        int lineLength = HLSequenceLine.length();
         while ((Turn == "hal" && HLSequence != 'h') || (Turn == "lyle" && HLSequence != 'l')) {
             if (HLSequenceLine == null || HLCharPosition == HLSequenceLine.length()) {
                 HLSequenceLine = b.readLine();
                 HLSequenceLine = HLSequenceLine.toLowerCase();
-//                        HLSequenceLine = HLSequenceLine.replaceAll("\t", " ");
-//                        HLSequenceLine = HLSequenceLine.replaceAll(" +", " ").trim();
+                HLSequenceLine = HLSequenceLine.replaceAll("\t", " ");
+                HLSequenceLine = HLSequenceLine.replaceAll(" +", " ").trim();
                 HLCharPosition = 0;
             }
             HLSequence = HLSequenceLine.charAt(HLCharPosition);
@@ -143,7 +137,14 @@ public class FileStreamManager {
         }
     }
 
-    public void LyleExecution() {
+public void LyleExecution() throws IOException {
+        ReferenceMonitor.RunInstuction(new InstruccionObjeto(TipoInstruccion.CREATE, "lyle", "obj"));
+        ReferenceMonitor.RunInstuction(new InstruccionObjeto(TipoInstruccion.WRITE, "lyle", "obj", 1));
+        ReferenceMonitor.RunInstuction(new InstruccionObjeto(TipoInstruccion.READ, "lyle", "obj"));
+        ReferenceMonitor.RunInstuction(new InstruccionObjeto(TipoInstruccion.DESTROY, "lyle", "obj"));
+        ReferenceMonitor.RunInstuction(new InstruccionObjeto(TipoInstruccion.RUN, "lyle"));
+
+        Turn = "hal";
     }
 
     public boolean EmptyData(char[] data) {
@@ -155,8 +156,8 @@ public class FileStreamManager {
             HLSequenceLine = "";
             HLSequenceLine = bufferedReaderFile.readLine();
             HLSequenceLine = HLSequenceLine.toLowerCase();
-//            HLSequenceLine = HLSequenceLine.replaceAll("\t", " ");
-//            HLSequenceLine = HLSequenceLine.replaceAll(" +", " ").trim();
+            HLSequenceLine = HLSequenceLine.replaceAll("\t", " ");
+            HLSequenceLine = HLSequenceLine.replaceAll(" +", " ").trim();
             HLSequenceLine = HLSequenceLine.replaceAll(" ", "");
         } catch (Exception e) {
             System.out.print("Error de lectura de archivo");
@@ -183,5 +184,6 @@ public class FileStreamManager {
         }
         return bits;
     }
+    
 
 }

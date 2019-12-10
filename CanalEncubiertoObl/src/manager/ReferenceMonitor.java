@@ -5,7 +5,10 @@ import entities.SecurityLevel;
 import entities.SecurityObject;
 import entities.SecuritySubject;
 import entities.TipoInstruccion;
+import fileAction.FileAction;
+import files.FileStreamManager;
 import files.LogFile;
+import files.TextFileRecorder;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,34 +21,45 @@ public class ReferenceMonitor {
     public static ObjectManager objectManager;
     public String sendedBits;
     private String fileRecordName = "";
+    private static RecordFile recordFile = null;
+    private String textFileRecordingName = "test//log.txt";
+    private FileStreamManager fileStreamManager = null;
 
-    public static ReferenceMonitor getInstance() {
+    public static ReferenceMonitor getInstance() throws IOException {
         if (referenceMonitor == null) {
             referenceMonitor = new ReferenceMonitor();
         }
         return referenceMonitor;
     }
 
-    private ReferenceMonitor() {
+    private ReferenceMonitor() throws IOException {
         objectManager = ObjectManager.getInstance();
         logFile = LogFile.getInstance();
+        logFile.CreateLog();
         sendedBits = "";
+        recordFile = RecordFile.getInstance(sendedBits);
+        fileStreamManager = FileStreamManager.getInstance();
     }
 
     //crea el objecto, recibe el nombre del objeto y ademas el seclevel de quien lo crea
-    public void createObject(String nombreObjeto, SecurityLevel secLevel) {
+    public void createObject(String nombreObjeto, String subjectName, SecurityLevel secLevel) throws IOException {
+        String actionLog = "";
         try {
-            if (!this.objectManager.CreateObject(nombreObjeto, secLevel)) {
-                throw new Exception();
+            boolean createObject = this.objectManager.CreateObject(nombreObjeto, secLevel);
+            if (createObject) {
+                actionLog = "CREATE " + subjectName + " " + nombreObjeto;
+                logFile.InsertLogLine(actionLog);
             }
         } catch (Exception e) {
             System.out.println("Objeto ya existe. Operacion invalida");
         }
+
     }
 
     //asumiendo que el objeto ya existe
     //asumiendo que el sujeto tiene acceso a write sobre el objeto
     public void destroyObject(String nombreObjeto, String nombreSujeto) {
+        String actionLog = "";
         try {
             if (objectManager.ExistObject(nombreObjeto)) {
 
@@ -74,6 +88,8 @@ public class ReferenceMonitor {
                 //entonces sujeto puede escribir en objeto
                 if (objectManager.dominates(actualObject.getSecurityLevel(), actualSubject.getSecurityLevel())) {
                     objectManager.destroyObject(nombreObjeto);
+                    actionLog = "DESTROY " + nombreSujeto + " " + nombreObjeto;
+                    logFile.InsertLogLine(actionLog);
                 } else {
                     throw new Exception("Sujeto no tiene acceso de Write sobre objeto. Operacion invalida");
                 }
@@ -83,6 +99,8 @@ public class ReferenceMonitor {
         } catch (Exception e) {
             System.out.println(e.getMessage().toString());
         }
+
+        
     }
 
     public void RunInstuction(InstruccionObjeto instruccion) throws IOException {
@@ -119,8 +137,9 @@ public class ReferenceMonitor {
         //para registrar en su estado interno, agregar al byte que se acaba de crear, 
         //y sacar el byte si se ha recibido los 8 bits para ese byte.
         if (subjectName == "lyle" && sendedBits.length() == 8) {
-            sendedBits = "";
             transferDataToOutput();
+            sendedBits = "";
+            
         }
 
         actionLog = "RUN " + subjectName;
@@ -133,11 +152,12 @@ public class ReferenceMonitor {
         byteToStore[0] = Byte.parseByte(sendedBits, 2);
 
         try {
-            RecordFile.getInstance("test//" + fileRecordName).record(byteToStore);
+            fileRecordName = fileStreamManager.getFileRecord();
+            RecordFile.getInstance("test//" + fileRecordName).record(byteToStore,fileRecordName);
         } catch (Exception e) {
             File file = new File("test//" + fileRecordName);
             file.createNewFile();
-            RecordFile.getInstance("test//" + fileRecordName).record(byteToStore);
+            RecordFile.getInstance("test//" + fileRecordName).record(byteToStore, fileRecordName);
         }
     }
 
@@ -145,34 +165,62 @@ public class ReferenceMonitor {
         this.fileRecordName = name;
     }
 
-    public void ExecuteREADAction(String objectName, String subjectName) throws IOException
-    {
+    public void ExecuteREADAction(String objectName, String subjectName) throws IOException {
         int valueRead = 0;
         String actionLog = "";
         SecuritySubject subject = objectManager.findSubjectByName(subjectName);
         SecurityObject object = objectManager.findObjectByName(objectName);
         if (objectManager.dominates(subject.getSecurityLevel(), object.getSecurityLevel())) {
-            subject.setTEMP(objectManager.read(subjectName,objectName));
+            subject.setTEMP(objectManager.read(subjectName, objectName));
             valueRead = subject.getTEMP();
+            actionLog = "READ " + subjectName + " " + objectName;
+            logFile.InsertLogLine(actionLog);
         } else {
             subject.setTEMP(0);
             valueRead = subject.getTEMP();
         }
-        
+
         sendedBits += valueRead;
-        actionLog = "READ " + subjectName + " " + objectName;
-        logFile.InsertLogLine(actionLog);
     }
 
-    public void ExecuteWRITEAction(String objectName, String subjectName, int value) {
+    public void ExecuteWRITEAction(String objectName, String subjectName, int value) throws IOException {
+        String actionLog = "";
+        SecuritySubject subject = objectManager.findSubjectByName(subjectName);
+        SecurityObject object = objectManager.findObjectByName(objectName);
+        boolean writeObject = false;
+        if (objectManager.dominates(object.getSecurityLevel(), subject.getSecurityLevel())) {
+            writeObject = objectManager.write(subjectName, objectName, value);
+            if (writeObject) {
+                actionLog = "WRITE " + subjectName + " " + objectName + " " + value;
+                logFile.InsertLogLine(actionLog);
+            }
+        }
     }
 
-    public void ExecuteCREATEAction(String objectName, String subjectName) {
+    public void ExecuteCREATEAction(String objectName, String subjectName) throws IOException {
+        SecuritySubject subject = objectManager.findSubjectByName(subjectName);
+        this.createObject(objectName, subjectName, subject.getSecurityLevel());
     }
 
     public void ExecuteDESTROYAction(String objectName, String subjectName) {
+        this.destroyObject(objectName, subjectName);
     }
 
     public void ExecuteBADAction() {
+    }
+
+    public void recordLastBits() throws IOException {
+        if (sendedBits.length() > 0) {
+            byte[] byteToStore = new byte[1];
+            byteToStore[0] = Byte.parseByte(sendedBits, 2);
+            sendedBits = "";
+            recordFile.getInstance(fileRecordName).record(byteToStore, fileRecordName);
+        }
+        closeFiles();
+    }
+
+    public void closeFiles() throws IOException {
+        TextFileRecorder.getInstance(textFileRecordingName).close();
+        recordFile.getInstance(fileRecordName).close();
     }
 }
