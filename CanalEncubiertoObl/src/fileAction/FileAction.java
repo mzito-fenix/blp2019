@@ -28,12 +28,11 @@ public class FileAction {
     public BufferedReader readHLSequenceFile(){
         try
         {
-            String message = "Ingrese nombre de archivo que contiene la secuencia H y L: "
-                    + "\n" + "Colocar [nombre archivo].[extension]";
+            String message = "Ingrese nombre de archivo que contiene la secuencia H y L junto con su extension (secuencia.txt): ";
             System.out.println(message);
             Scanner scanner = new Scanner(System.in);
             String inputString = scanner.nextLine();
-            BufferedReader br = new BufferedReader(new FileReader("Prueba/" + inputString));
+            BufferedReader br = new BufferedReader(new FileReader("test/" + inputString));
             return br;
         }
         catch(Exception e)

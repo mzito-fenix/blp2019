@@ -24,7 +24,7 @@ public class LogFile {
     public void CreateLog()throws IOException{
         String path = new File(".").getAbsolutePath();
         path = path.substring(0,path.length() - 1);
-        logFile = path + "\\logs\\"+ "log.log";
+        logFile = path + "\\test\\"+ "log.log";
         System.out.println(logFile);
         FileWriter fileWrite = new FileWriter(logFile);
     }
