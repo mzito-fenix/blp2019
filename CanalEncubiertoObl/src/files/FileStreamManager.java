@@ -4,8 +4,12 @@ import entities.InstruccionObjeto;
 import entities.TipoInstruccion;
 import fileAction.FileAction;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
@@ -57,7 +61,7 @@ public class FileStreamManager {
         return outputFileName;
     }
     
-    public String getOutputFileName() {
+    public String getOutputFileName() throws IOException{
         String fileName = fileToTransfer.getName();
         String[] aux = fileName.split("\\.");
         outputFileName = "";
@@ -68,6 +72,7 @@ public class FileStreamManager {
                 outputFileName += aux[i] + ".";
             }
         }
+        
         return outputFileName;
     }
 
@@ -185,5 +190,27 @@ public void LyleExecution() throws IOException {
         return bits;
     }
     
+     public void clearFile() throws IOException {
+        File inputFile = new File("myFile.txt");
+        File tempFile = new File("myTempFile.txt");
+
+        BufferedReader reader = new BufferedReader(new FileReader("test/" + outputFileName));
+        BufferedWriter writer = new BufferedWriter(new FileWriter("test/" + outputFileName));
+
+        String lineToRemove = "bbb";
+        String currentLine;
+
+        while ((currentLine = reader.readLine()) != null) {
+            // trim newline when comparing with lineToRemove
+            String trimmedLine = currentLine.trim();
+            if (trimmedLine.equals(lineToRemove)) {
+                continue;
+            }
+            writer.write(currentLine + System.getProperty("line.separator"));
+        }
+        writer.close();
+        reader.close();
+        boolean successful = tempFile.renameTo(inputFile);
+    }
 
 }

@@ -28,7 +28,7 @@ public class CanalEncubiertoOblMain {
         try {
             ejecutarPrograma();
         } catch (Exception e) {
-            System.out.println("Ha ocurrido un error");
+            System.out.println("FIN DE EJECUCION");
         }
     }
 
@@ -60,6 +60,7 @@ public class CanalEncubiertoOblMain {
 
             if (fileCorrectData()) {
                 outputFileName = fileStreamManager.getOutputFileName();
+                fileStreamManager.clearFile();
                 referenceMonitor.setFileRecordName(outputFileName);
                 System.out.println("Trabajando. Puede demorar unos segundos...");
                 //llamada a las cosas que estoy haciendo de los archivos
